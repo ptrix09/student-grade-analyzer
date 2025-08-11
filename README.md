@@ -18,6 +18,7 @@ A Python-based data analysis project that processes student exam scores, assigns
 # 📌 Output
 - Table of students with total, average, and grade
 - Bar chart showing average marks per student
+- also displays different colors in the chart as per student grade
 
 # 🙌 Author
 Piyush Bhagat – Data Science Enthusiast & Power BI Learner
