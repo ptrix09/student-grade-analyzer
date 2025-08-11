@@ -1,16 +1,13 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Load dataset
+# 📥 Read processed data
 df = pd.read_csv("students_scores.csv")
-print("📄 Original Data:")
-print(df.head())
 
-# Calculate Total and Average
-df["Total"] = df[["Math", "Science", "English"]].sum(axis=1)
-df["Average"] = df["Total"] / 3
+# 📊 Calculate average marks
+df["Average"] = df[["Math", "Science", "English"]].mean(axis=1)
 
-# Assign grades
+# 🏆 Assign grades based on average
 def assign_grade(avg):
     if avg >= 90:
         return "A+"
@@ -20,28 +17,47 @@ def assign_grade(avg):
         return "B"
     elif avg >= 60:
         return "C"
-    elif avg >= 50:
-        return "D"
     else:
-        return "F"
+        return "D"
 
 df["Grade"] = df["Average"].apply(assign_grade)
 
-print("\n📊 Processed Data with Grades:")
-print(df)
+# 🎨 Color mapping for grades
+grade_colors = {
+    "A+": "green",
+    "A": "limegreen",
+    "B": "gold",
+    "C": "orange",
+    "D": "red"
+}
+colors = df["Grade"].map(grade_colors)
 
-# Save processed data
+# 📤 Save processed data
 df.to_csv("students_scores_with_grades.csv", index=False)
 
-# Visualization
+# 📈 Visualization
 plt.figure(figsize=(10, 6))
-plt.bar(df["Name"], df["Average"], color="skyblue")
+bars = plt.bar(df["Name"], df["Average"], color=colors)
+
+# Add grade labels above each bar
+for bar, grade in zip(bars, df["Grade"]):
+    plt.text(
+        bar.get_x() + bar.get_width() / 2,
+        bar.get_height() + 0.5,
+        grade,
+        ha='center',
+        fontsize=10,
+        fontweight='bold',
+        color='black'
+    )
+
 plt.xlabel("Student Name")
 plt.ylabel("Average Marks")
-plt.title("Average Marks per Student")
+plt.title("Average Marks per Student with Grades")
 plt.xticks(rotation=45)
 plt.tight_layout()
 
-# Save chart as image
+# Save chart
 plt.savefig("sample_output.png")
 plt.show()
+
